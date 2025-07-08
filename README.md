@@ -376,8 +376,8 @@ PKCEフローで取得されるアクセストークンは **JWT（JSON Web Toke
   },
   "payload": {
     "sub": "user-uuid",
-    "aud": "3oadj73raceg7qfa8shrb4gqjf",  // Client ID
-    "iss": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_yzM7egBuq",
+    "aud": "XXXXXXXXXXXXXXXXXXXXXXXXXX",  // Client ID
+    "iss": "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_XXXXXXXXX",
     "exp": 1704067200,  // 有効期限（通常1時間）
     "iat": 1704063600,  // 発行時刻
     "scope": "openid profile email",
@@ -882,10 +882,10 @@ npx cdk deploy --require-approval never
 ```
 
 **出力される重要な値:**
-- User Pool ID: `ap-northeast-1_yzM7egBuq`
-- App Client ID: `3oadj73raceg7qfa8shrb4gqjf`
-- Cognito Domain: `https://pkce-auth-034362035978.auth.ap-northeast-1.amazoncognito.com`
-- API Endpoint: `https://5se5jr1qvb.execute-api.ap-northeast-1.amazonaws.com/prod/`
+- User Pool ID: `ap-northeast-1_XXXXXXXXX`
+- App Client ID: `XXXXXXXXXXXXXXXXXXXXXXXXXX`
+- Cognito Domain: `https://pkce-auth-XXXXXXXXXXXX.auth.ap-northeast-1.amazoncognito.com`
+- API Endpoint: `https://XXXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/prod/`
 
 ### 2. フロントエンドの設定
 
@@ -893,11 +893,11 @@ npx cdk deploy --require-approval never
 
 ```javascript
 const config = {
-    clientId: '3oadj73raceg7qfa8shrb4gqjf',
-    cognitoDomain: 'https://pkce-auth-034362035978.auth.ap-northeast-1.amazoncognito.com',
+    clientId: 'XXXXXXXXXXXXXXXXXXXXXXXXXX',
+    cognitoDomain: 'https://pkce-auth-XXXXXXXXXXXX.auth.ap-northeast-1.amazoncognito.com',
     redirectUri: window.location.origin + '/callback',
     logoutUri: window.location.origin,
-    apiEndpoint: 'https://5se5jr1qvb.execute-api.ap-northeast-1.amazonaws.com/prod/'
+    apiEndpoint: 'https://XXXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/prod/'
 };
 ```
 
@@ -914,7 +914,7 @@ AmplifyのURLを取得後、CDKスタックを更新:
 
 ```typescript
 callbackUrls: [
-  'https://staging.dq8cdxwfgi8cc.amplifyapp.com/callback',  // AmplifyのURL
+  'https://staging.XXXXXXXXX.amplifyapp.com/callback',  // AmplifyのURL
   'http://localhost:3000/callback',
 ],
 ```
