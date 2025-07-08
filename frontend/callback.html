@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>認証コールバック処理中...</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .callback-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-message {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #feb2b2;
+            margin: 20px;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="callback-container">
+        <div class="loading-spinner"></div>
+        <div class="status-message" id="status-message">認証処理中...</div>
+        <div id="error-container" style="display: none;">
+            <div class="error-message" id="error-message"></div>
+            <button onclick="window.location.href='/'" class="btn btn-primary">
+                メインページに戻る
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // URLパラメータから認証コードまたはエラーを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        const statusMessage = document.getElementById('status-message');
+        const errorContainer = document.getElementById('error-container');
+        const errorMessageEl = document.getElementById('error-message');
+        
+        async function handleCallback() {
+            try {
+                if (error) {
+                    throw new Error(`認証エラー: ${error} - ${errorDescription || '詳細不明'}`);
+                }
+                
+                if (!authCode) {
+                    throw new Error('認証コードが見つかりません');
+                }
+                
+                statusMessage.textContent = '認証コードを処理中...';
+                
+                // メインページにリダイレクトして認証コードを処理させる
+                // PKCEフローの実際の処理はメインページで行う
+                window.location.href = `/?code=${authCode}`;
+                
+            } catch (err) {
+                console.error('Callback handling failed:', err);
+                
+                // エラー表示
+                document.querySelector('.loading-spinner').style.display = 'none';
+                statusMessage.style.display = 'none';
+                errorMessageEl.textContent = err.message;
+                errorContainer.style.display = 'block';
+            }
+        }
+        
+        // ページ読み込み時にコールバック処理を実行
+        handleCallback();
+    </script>
+</body>
+</html>

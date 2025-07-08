@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKCE Authentication Demo - PLC Control</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PKCE認証デモ - PLCコントロール</h1>
+        
+        <div id="auth-status" class="auth-status">
+            <div class="status-indicator" id="status-indicator"></div>
+            <span id="status-text">認証状態を確認中...</span>
+        </div>
+
+        <div id="login-section" class="section" style="display: none;">
+            <h2>ログインが必要です</h2>
+            <p>PLCコントロール機能を使用するには、ログインしてください。</p>
+            <button id="login-button" class="btn btn-primary">Cognitoでログイン</button>
+            <div class="info-box">
+                <h3>PKCEフローについて</h3>
+                <p>この認証システムは、PKCE（Proof Key for Code Exchange）を使用しています。</p>
+                <ul>
+                    <li>クライアントシークレットが不要</li>
+                    <li>ブラウザベースのアプリケーションに最適</li>
+                    <li>セキュアな認証フロー</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="app-section" class="section" style="display: none;">
+            <h2>PLCコマンド送信</h2>
+            
+            <div id="user-info" class="user-info">
+                <p>ログイン中: <span id="user-email"></span></p>
+                <button id="logout-button" class="btn btn-secondary">ログアウト</button>
+            </div>
+
+            <form id="plc-form" class="plc-form">
+                <div class="form-group">
+                    <label for="command">コマンド:</label>
+                    <select id="command" name="command" required>
+                        <option value="write">書き込み (Write)</option>
+                        <option value="read">読み込み (Read)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="area">エリア種別:</label>
+                    <select id="area" name="area" required>
+                        <option value="DM">DM (データメモリ)</option>
+                        <option value="HR">HR (保持リレー)</option>
+                        <option value="WR">WR (ワークリレー)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">開始アドレス:</label>
+                    <input type="number" id="address" name="address" value="31000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="value">値:</label>
+                    <input type="text" id="value" name="value" placeholder="書き込む値" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">送信</button>
+            </form>
+
+            <div id="response-section" class="response-section" style="display: none;">
+                <h3>レスポンス:</h3>
+                <pre id="response-content"></pre>
+            </div>
+        </div>
+
+        <div id="error-section" class="error-section" style="display: none;">
+            <h2>エラーが発生しました</h2>
+            <p id="error-message"></p>
+            <button id="retry-button" class="btn btn-secondary">再試行</button>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h3>デバッグ情報</h3>
+        <button id="toggle-debug" class="btn btn-secondary">デバッグ情報を表示</button>
+        <div id="debug-info" style="display: none;">
+            <h4>認証フロー:</h4>
+            <ol id="auth-flow-steps"></ol>
+            <h4>設定:</h4>
+            <pre id="config-info"></pre>
+            <h4>トークン情報:</h4>
+            <pre id="token-info"></pre>
+        </div>
+    </div>
+
+    <script src="pkce-auth.js"></script>
+</body>
+</html>
